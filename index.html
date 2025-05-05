@@ -112,12 +112,7 @@
         // Function to show the interstitial ad
         function showInterstitial() {
             if (!readyInterstitial) {
-                try {
-                    console.log("Back to response from interstitial");
-                    instanceOfUnity.SendMessage('AdsManager', 'ResponseFromJsRedirect');
-                } catch (e) {
-                    console.error("Error sending message to Unity:", e);
-                }
+                 instanceOfUnity.SendMessage('AdsManager', 'ResponseFromJsRedirect');
                 return;
             }
 
@@ -134,8 +129,8 @@
                     });
             } else {
                 console.log('Interstitial not preloaded yet!');
-                instanceOfUnity.SendMessage('AdsManager', 'ResponseFromJsCancel');
                 preloadInterstitial();
+                showRewarded();
             }
         }
 
