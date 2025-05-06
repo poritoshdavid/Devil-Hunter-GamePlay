@@ -46,33 +46,14 @@
                 console.log('Ads are supported, preloading...');
                 preloadInterstitial();  // Preload the interstitial ad
                 preloadRewarded();      // Preload the rewarded video ad
-                LoadBannerAd(); // load bannder ads;
             }
         }
-
-        function LoadBannerAd() {
-            FBInstant.loadBannerAdAsync(
-                '1386546122481892_1386604185809419',
-                'bottom'
-            ).then(() => {
-                console.log('success');
-            });
-        }
-
-
-        function HideBannerAd() {
-            FBInstant.hideBannerAdAsync();
-        }
-
-
-
-
 
 
         // Function to preload the interstitial ad
         function preloadInterstitial() {
             console.log('Preloading Interstitial');
-            let id = '1386546122481892_1386604585809379';  // Example ID, replace with actual ID.
+            let id = '619111741169638_619951011085711';  // Example ID, replace with actual ID.
             console.log('Interstitial ID: ' + id);  // Log the ID
             FBInstant.getInterstitialAdAsync(id)
                 .then(function (interstitial) {
@@ -93,7 +74,7 @@
         // Function to preload the rewarded video ad
         function preloadRewarded() {
             console.log('Preloading Rewarded Video');
-            let id = '1386546122481892_1386604469142724';  // Example ID, replace with actual ID.
+            let id = '619111741169638_619951311085681';  // Example ID, replace with actual ID.
             FBInstant.getRewardedVideoAsync(id)
                 .then(function (rewarded) {
                     preloadedRewardedVideo = rewarded;
@@ -120,7 +101,7 @@
                 preloadedInterstitial.showAsync()
                     .then(function () {
                         console.log('Interstitial watched!');
-                        instanceOfUnity.SendMessage('AdsManager', 'ResponseFromJsSuccess');
+                        instanceOfUnity.SendMessage('AdsManager', 'ResponseFromJsSuccess',"audio");
                         preloadInterstitial();
                     })
                     .catch(function (error) {
@@ -144,7 +125,7 @@
                 preloadedRewardedVideo.showAsync()
                     .then(function () {
                         console.log('Rewarded Video watched!');
-                        instanceOfUnity.SendMessage('AdsManager', 'ResponseFromJsSuccess');
+                        instanceOfUnity.SendMessage('AdsManager', 'ResponseFromJsSuccess',"video");
                         preloadRewarded();
                     })
                     .catch(function (error) {
@@ -181,6 +162,8 @@
         function GetCurrentPlayerList() {
             FBInstant.player.getDataAsync(["PlayerList"]).then((data) => {
                 let list = data.PlayerList || []; // Use [] as default
+
+                console.log(list);
                 instanceOfUnity.SendMessage('AdsManager', 'UpdatePlayerList', JSON.stringify(list));
             }).catch((e) => {
                 instanceOfUnity.SendMessage('AdsManager', 'UpdatePlayerList', JSON.stringify([]));
@@ -190,7 +173,7 @@
         function SetCurrentPlayerList(json) {
             let data = JSON.parse(json);
             let playerList = data.list;
-
+            console.log(playerList);
 
             FBInstant.player.setDataAsync({ "PlayerList": playerList }).then(() => {
                 GetCurrentPlayerList();
